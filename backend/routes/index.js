@@ -18,4 +18,12 @@ router.post('/todo', controller.addTodo);
 // PATCH /api-server/todo/:todoId
 router.patch('/todo/:todoId', controller.patchDoneState);
 
+//------------- (todo) 수정, 삭제에 대한 API -------------
+
+// DELETE /api-server/todo/:todoId
+router.delete('/todo/:todoId', controller.deleteTodo);
+
+// PATCH /api-server/content
+router.patch('/content', controller.patchContent);
+
 module.exports = router;

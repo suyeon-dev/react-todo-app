@@ -1,4 +1,4 @@
-const { Todo } = require('../models');
+const { Todo, sequelize } = require('../models');
 
 // test API
 exports.getIndex = (req, res) => {
@@ -59,3 +59,38 @@ exports.patchDoneState = async (req, res) => {
 };
 
 ///////// (todo) 수정, 삭제에 대한 API //////
+
+// DELETE /api-server/todo/:todoId
+
+exports.deleteTodo = async (req, res) => {
+  try {
+    const { todoId } = req.params;
+
+    const isDeleted = await Todo.destroy({ where: { id: todoId } }); // 0 또는 1
+    Boolean(isDeleted)
+      ? res.send({ isSuccess: true })
+      : res.send({ isSuccess: false });
+  } catch (err) {
+    console.log('server err!', err);
+    res.status(500).send('Server Error!');
+  }
+};
+
+// PATCH /api-server/todo/
+exports.patchContent = async (req, res) => {
+  // req.body = {id, text}
+  try {
+    const { id, text } = req.body;
+    const [isUpdated] = await Todo.update(
+      { text: text },
+      { where: { id: id } }
+    );
+
+    Boolean(isUpdated)
+      ? res.send({ isSuccess: true })
+      : res.send({ isSuccess: false });
+  } catch (err) {
+    console.log('server err!', err);
+    res.status(500).send('SERVER ERR!');
+  }
+};
